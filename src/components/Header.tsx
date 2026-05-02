@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { NAV } from "../lib/nav";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [dark, setDark] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -15,6 +16,19 @@ export default function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setDark(document.documentElement.classList.contains("dark"));
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !document.documentElement.classList.contains("dark");
+    document.documentElement.classList.toggle("dark", next);
+    try {
+      localStorage.setItem("theme", next ? "dark" : "light");
+    } catch {}
+    setDark(next);
+  };
 
   return (
     <header
@@ -41,19 +55,37 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
+          <button
+            type="button"
+            aria-label={dark ? "Passer en mode jour" : "Passer en mode nuit"}
+            onClick={toggleTheme}
+            className="h-9 w-9 inline-flex items-center justify-center rounded-full border hairline hover:bg-[var(--surface)] transition-colors"
+          >
+            {dark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
           <Link href="/contact" className="btn-primary text-[13px] px-4 py-2">
             Demande de démo
           </Link>
         </div>
 
-        <button
-          aria-label="Ouvrir le menu"
-          className="md:hidden p-2 -mr-2"
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="md:hidden flex items-center gap-1">
+          <button
+            type="button"
+            aria-label={dark ? "Passer en mode jour" : "Passer en mode nuit"}
+            onClick={toggleTheme}
+            className="h-9 w-9 inline-flex items-center justify-center rounded-full"
+          >
+            {dark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button
+            aria-label="Ouvrir le menu"
+            className="p-2 -mr-2"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {open && (

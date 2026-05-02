@@ -205,7 +205,7 @@ export default function Home() {
           <Reveal className="md:order-1">
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border hairline">
               <Image
-                src="https://images.unsplash.com/photo-1556742400-b5b7c5121f4e?auto=format&fit=crop&w=1600&q=80"
+                src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1600&q=80"
                 alt="Caisse Magic en magasin"
                 fill
                 sizes="(max-width: 768px) 100vw, 600px"
